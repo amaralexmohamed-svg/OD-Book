@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب جديد | OD Book</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .register-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .register-container .logo {
+            font-size: 30px;
+            font-weight: 900;
+            text-decoration: none;
+            color: #1a1a1a;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .register-container .logo span {
+            color: var(--main-orange);
+        }
+
+        .register-container h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .input-group {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-family: 'Cairo';
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--main-orange);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--main-orange);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-register:hover {
+            background-color: #e65c00;
+            transform: translateY(-2px);
+        }
+
+        .error-banner {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .register-footer {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .register-footer a {
+            color: var(--main-orange);
+            text-decoration: none;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        <a href="/" class="logo">OD <span>Book</span></a>
+        <h2>انضم إلينا وابدأ رحلة الاستماع</h2>
+
+        <% if (locals.error) { %>
+            <div class="error-banner">
+                <i class="fas fa-exclamation-triangle"></i> <%= error %>
+            </div>
+        <% } %>
+
+        <form action="/register" method="POST">
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> اسم المستخدم</label>
+                <input type="text" name="username" placeholder="اختر اسماً مميزاً" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
+                <input type="email" name="email" placeholder="example@gmail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> كلمة السر</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-register">إنشاء الحساب الآن</button>
+        </form>
+
+        <div class="register-footer">
+            لديك حساب بالفعل؟ <a href="/login">سجل دخولك من هنا</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | OD Book</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .login-container .logo {
+            font-size: 32px;
+            font-weight: 900;
+            text-decoration: none;
+            color: #1a1a1a;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .login-container .logo span {
+            color: var(--main-orange);
+        }
+
+        .login-container h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .login-container p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            font-family: 'Cairo';
+            font-size: 15px;
+            transition: 0.3s;
+            background: #fafafa;
+        }
+
+        .input-group input:focus {
+            border-color: var(--main-orange);
+            background: #fff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
+        }
+
+        .error-banner {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--main-orange);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        .login-footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-footer a {
+            color: var(--main-orange);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/" class="back-home"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+
+    <div class="login-container">
+        <a href="/" class="logo">OD <span>Book</span></a>
+        <h2>أهلاً بك مجدداً</h2>
+        <p>سجل دخولك لتستمتع بمكتبتنا الصوتية</p>
+
+        <% if (locals.error) { %>
+            <div class="error-banner">
+                <i class="fas fa-exclamation-circle"></i>
+                <%= error %>
+            </div>
+        <% } %>
+
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <label>اسم المستخدم</label>
+                <input type="text" name="username" placeholder="أدخل اسمك أو بريدك" required>
+            </div>
+
+            <div class="input-group">
+                <label>كلمة السر</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-submit">دخول</button>
+        </form>
+
+        <div class="login-footer">
+            ليس لديك حساب؟ <a href="/register">اشترك الآن مجاناً</a>
+        </div>
+    </div>
+
+</body>
+</html>

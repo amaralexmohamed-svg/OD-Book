@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تصنيف: <%= categoryTitle %> | OD Book</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-btns">
+            <a href="/books" class="btn-login" style="border: 1px solid var(--main-orange);">كل الكتب</a>
+        </div>
+        
+        <ul class="nav-links">
+            <li><a href="/">الرئيسية</a></li>
+            <li><a href="/about">من نحن</a></li>
+        </ul>
+
+        <a href="/" class="logo">OD <span>Book</span></a>
+    </nav>
+
+    <div class="container" style="padding: 50px 8%;">
+        <div style="border-right: 5px solid var(--main-orange); padding-right: 20px; margin-bottom: 40px;">
+            <h1 style="font-size: 2.5rem; margin: 0;">كتب قسم: <span style="color: var(--main-orange);"><%= categoryTitle %></span></h1>
+            <p style="color: #666; margin-top: 5px;" >استمتع بمجموعة مختارة من كتب <%= categoryTitle %></p>
+        </div>
+        
+        <div class="books-grid">
+            <% if (books.length > 0) { %>
+                <% books.forEach(book => { %>
+                    <div class="book-card" onclick="window.location.href='/book/<%= book.id %>'">
+                        <img src="/images/<%= book.img %>" alt="<%= book.title %>">
+                        <div class="book-info">
+                            <h3><%= book.title %></h3>
+                            <p><%= book.author %></p>
+                            <span style="font-size: 11px; background: #fff3e0; color: var(--main-orange); padding: 2px 10px; border-radius: 20px; font-weight: bold;">
+                                <%= book.category %>
+                            </span>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div style="grid-column: 1/-1; text-align: center; padding: 100px 0; background: #fafafa; border-radius: 20px;">
+                    <i class="fas fa-book-open" style="font-size: 4rem; color: #ddd; margin-bottom: 20px;"></i>
+                    <h2 style="color: #888;">قريباً.. كتب جديدة في هذا القسم</h2>
+                    <a href="/books" style="color: var(--main-orange); font-weight: bold; text-decoration: none;">تصفح أقسام أخرى ←</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <footer style="margin-top: 50px; text-align: center; padding: 30px; color: #888; border-top: 1px solid #eee;">
+        <p>جميع الحقوق محفوظة لـ OD Book &copy; 2026</p>
+    </footer>
+</body>
+</html>

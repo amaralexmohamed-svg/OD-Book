@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المكتبة الكاملة | OD Book</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #fcfcfc; }
+        
+        /* تطوير أزرار الفلترة */
+        .filter-container { 
+            text-align: center; 
+            margin: 40px 0; 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            padding: 0 5%;
+        }
+        .filter-btn {
+            background: #fff; border: 2px solid #eee; color: #555;
+            padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+        }
+        .filter-btn.active { 
+            background: var(--main-orange); 
+            border-color: var(--main-orange); 
+            color: #fff; 
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.25); 
+            transform: translateY(-2px);
+        }
+        .filter-btn:hover:not(.active) {
+            border-color: var(--main-orange);
+            color: var(--main-orange);
+            background: #fffaf5;
+        }
+
+        /* تحسين شبكة الكتب */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+            perspective: 1000px;
+        }
+        
+        .book-card { 
+            transition: all 0.4s ease; 
+            opacity: 1; 
+            transform: scale(1);
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .book-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .hidden { 
+            opacity: 0 !important; 
+            transform: scale(0.8) translateY(20px) !important;
+            pointer-events: none;
+            position: absolute; /* عشان مياخدش مساحة وهو مختفي */
+            visibility: hidden;
+        }
+
+        .category-tag {
+            font-size: 11px;
+            background: rgba(255, 107, 0, 0.1);
+            padding: 4px 12px;
+            border-radius: 50px;
+            color: var(--main-orange);
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* أنيميشن بسيط لدخول الصفحة */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container { animation: fadeInUp 0.6s ease-out; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">OD <span>Book</span></a>
+        <ul class="nav-links">
+            <li><a href="/">الرئيسية</a></li>
+            <li><a href="/books" class="active">الكتب</a></li>
+            <% if (locals.isLoggedIn) { %>
+                <li><a href="/admin/add" style="background: var(--main-orange); color: #fff; padding: 5px 15px; border-radius: 8px;">إضافة كتاب</a></li>
+            <% } %>
+        </ul>
+    </nav>
+
+    <div class="container" style="padding: 50px 8%;">
+        <header style="text-align: center; margin-bottom: 50px;">
+            <h1 class="section-title" style="font-size: 2.5rem; font-weight: 900;">مكتبة <span style="color: var(--main-orange);">OD</span> الشاملة</h1>
+            <p style="color: #888; margin-top: 10px;">اكتشف عالمك الخاص بين آلاف الحكايات الصوتية</p>
+        </header>
+
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="الكل">كل التصنيفات</button>
+            <button class="filter-btn" data-filter="رواية">📚 روايات</button>
+            <button class="filter-btn" data-filter="ثقافة">🧠 ثقافة</button>
+            <button class="filter-btn" data-filter="تاريخ">📜 تاريخ</button>
+            <button class="filter-btn" data-filter="علم نفس">🧪 علم نفس</button>
+            <button class="filter-btn" data-filter="دين">🕌 دين</button>
+        </div>
+
+        <div class="books-grid" id="booksGrid">
+            <% if (books && books.length > 0) { %>
+                <% books.forEach(book => { %>
+                    <div class="book-card" data-category="<%= book.category %>" onclick="window.location.href='/book/<%= book.id %>'">
+                        <img src="/images/<%= book.img %>" alt="<%= book.title %>" onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+                        <div class="book-info">
+                            <h3 style="font-size: 18px; margin-bottom: 5px;"><%= book.title %></h3>
+                            <p style="color: #777; font-size: 14px;"><%= book.author %></p>
+                            <span class="category-tag">
+                                <i class="fas fa-tag" style="font-size: 10px; margin-left: 5px;"></i><%= book.category %>
+                            </span>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div style="grid-column: 1/-1; text-align: center; padding: 100px 0;">
+                    <i class="fas fa-book-open" style="font-size: 5rem; color: #eee; margin-bottom: 20px;"></i>
+                    <h2 style="color: #ccc;">لا توجد كتب متاحة حالياً</h2>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const bookCards = document.querySelectorAll('.book-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 1. تحديث شكل الأزرار
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                btn.classList.add('active');
+
+                // 2. منطق الفلترة المطور
+                const filterValue = btn.getAttribute('data-filter');
+
+                bookCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    
+                    if (filterValue === "الكل" || cardCategory === filterValue) {
+                        card.style.position = "relative";
+                        card.style.visibility = "visible";
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                        // ننتظر انتهاء الأنيميشن قبل "سحب" الكارت من الـ Grid
+                        setTimeout(() => {
+                            if(card.classList.contains('hidden')) {
+                                card.style.position = "absolute";
+                                card.style.visibility = "hidden";
+                            }
+                        }, 400);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <footer style="margin-top: 100px; text-align: center; padding: 40px; background: #fff; border-top: 1px solid #f0f0f0;">
+        <div style="margin-bottom: 15px;">
+            <a href="#" style="color: #555; margin: 0 10px;"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" style="color: #555; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+            <a href="#" style="color: #555; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
+        </div>
+        <p style="font-size: 14px; color: #aaa;">صنع بكل ❤️ في El Mahalla El Kubra</p>
+        <p style="font-size: 12px; color: #bbb; margin-top: 5px;">جميع الحقوق محفوظة لـ OD Book &copy; 2026</p>
+    </footer>
+</body>
+</html>

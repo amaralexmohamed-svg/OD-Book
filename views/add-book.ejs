@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | إضافة كتاب احترافي</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root { --glass-bg: rgba(255, 255, 255, 0.9); }
+        body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Cairo', sans-serif; min-height: 100vh; padding: 40px 20px; }
+        
+        .admin-card {
+            background: var(--glass-bg); backdrop-filter: blur(10px);
+            border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            display: grid; grid-template-columns: 1.2fr 0.8fr;
+            overflow: hidden; max-width: 1100px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .form-side { padding: 40px; background: white; }
+        .preview-side { 
+            padding: 40px; background: rgba(255, 107, 0, 0.03); 
+            display: flex; flex-direction: column; align-items: center; justify-content: start;
+            border-right: 1px solid #eee;
+        }
+
+        h2 { font-weight: 900; color: #1a1a1a; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+        h2 i { color: var(--main-orange); }
+
+        .input-group { margin-bottom: 25px; position: relative; }
+        .input-group label { display: block; margin-bottom: 10px; font-weight: 700; color: #444; font-size: 14px; }
+        
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%; padding: 14px 18px; border: 2px solid #edf2f7; border-radius: 15px;
+            font-family: 'Cairo'; transition: all 0.3s ease; background: #fcfdfe;
+        }
+
+        .input-group input[type="file"] { padding: 10px; background: #fff; border: 2px dashed #ddd; }
+        .input-group input:focus { border-color: var(--main-orange); background: white; box-shadow: 0 0 0 4px rgba(255,107,0,0.1); outline: none; }
+
+        .live-preview-card {
+            width: 240px; background: #fff; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden; transform: perspective(1000px) rotateY(-5deg); transition: 0.5s;
+        }
+        .live-preview-card:hover { transform: perspective(1000px) rotateY(0deg); }
+        .live-preview-card img { width: 100%; height: 320px; object-fit: cover; background: #f0f0f0; }
+        .live-preview-info { padding: 20px; text-align: center; }
+        
+        .badge { background: var(--main-orange); color: white; padding: 4px 12px; border-radius: 50px; font-size: 11px; margin-bottom: 10px; display: inline-block; }
+
+        .btn-save {
+            background: linear-gradient(45deg, var(--main-orange), #ff8c00);
+            color: white; border: none; width: 100%; padding: 18px; border-radius: 15px;
+            font-size: 18px; font-weight: 900; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(255,107,0,0.3);
+        }
+        .btn-save:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255,107,0,0.4); }
+
+        #charCounter { font-size: 12px; color: #888; position: absolute; left: 10px; bottom: -20px; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <div class="form-side">
+            <h2><i class="fas fa-magic"></i> إضافة كتاب ذكي</h2>
+            
+            <form id="addBookForm" action="/admin/add" method="POST" enctype="multipart/form-data">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="input-group">
+                        <label>العنوان</label>
+                        <input type="text" name="title" id="bookTitle" placeholder="عنوان الكتاب" required>
+                    </div>
+                    <div class="input-group">
+                        <label>المؤلف</label>
+                        <input type="text" name="author" id="bookAuthor" placeholder="اسم الكاتب" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="input-group">
+                        <label>التصنيف</label>
+                        <select name="category" id="bookCat">
+                            <option value="روايات">📚 روايات</option>
+                            <option value="تنمية بشرية">🧠 تنمية بشرية</option>
+                            <option value="تاريخ">📜 تاريخ</option>
+                            <option value="دين">🕌 دين</option>
+                            <option value="علم نفس">🧪 علم نفس</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>غلاف الكتاب (صورة)</label>
+                        <input type="file" name="bookImage" id="bookImg" accept="image/*" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>رابط الصوت (اختبر الرابط بالأسفل)</label>
+                    <input type="text" name="audio" id="bookAudio" placeholder="https://example.com/audio.mp3">
+                </div>
+
+                <div class="input-group">
+                    <label>الوصف التشويقي</label>
+                    <textarea name="desc" id="bookDesc" rows="4" maxlength="300" placeholder="اكتب ملخصاً يجذب المستمعين..."></textarea>
+                    <span id="charCounter">0 / 300 حرف</span>
+                </div>
+
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-cloud-upload-alt"></i> نشر الكتاب الآن
+                </button>
+            </form>
+        </div>
+
+        <div class="preview-side">
+            <h4 style="margin-bottom: 30px; color: #555;"><i class="fas fa-eye"></i> معاينة حية</h4>
+            
+            <div class="live-preview-card">
+                <img id="prevImg" src="https://via.placeholder.com/300x450?text=OD+Book" alt="">
+                <div class="live-preview-info">
+                    <span class="badge" id="prevCat">روايات</span>
+                    <h3 id="prevTitle" style="font-size: 18px; margin: 5px 0;">عنوان الكتاب</h3>
+                    <p id="prevAuthor" style="font-size: 14px; color: #888;">اسم المؤلف</p>
+                </div>
+            </div>
+
+            <div id="audioTest" style="margin-top: 30px; width: 100%; display:none;">
+                <p style="font-size: 12px; margin-bottom: 10px; color: #666; text-align: center;">جرب جودة الصوت:</p>
+                <audio id="audioPlayer" controls style="width: 100%; height: 35px;"></audio>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const titleInp = document.getElementById('bookTitle');
+        const authorInp = document.getElementById('bookAuthor');
+        const catInp = document.getElementById('bookCat');
+        const imgInp = document.getElementById('bookImg');
+        const descInp = document.getElementById('bookDesc');
+        const audioInp = document.getElementById('bookAudio');
+
+        // تحديث النصوص
+        titleInp.oninput = () => document.getElementById('prevTitle').innerText = titleInp.value || 'عنوان الكتاب';
+        authorInp.oninput = () => document.getElementById('prevAuthor').innerText = authorInp.value || 'اسم المؤلف';
+        catInp.onchange = () => document.getElementById('prevCat').innerText = catInp.value;
+        
+        // تحديث الصورة عند اختيار ملف من الجهاز
+        imgInp.onchange = function() {
+            const file = this.files[0];
+            if (file) {
+                // إنشاء رابط مؤقت للصورة المرفوعة لعرضها في المعاينة
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('prevImg').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // عداد الحروف
+        descInp.oninput = () => {
+            const len = descInp.value.length;
+            document.getElementById('charCounter').innerText = `${len} / 300 حرف`;
+        };
+
+        // اختبار الصوت
+        audioInp.oninput = function() {
+            const player = document.getElementById('audioPlayer');
+            const container = document.getElementById('audioTest');
+            if(this.value.length > 5) {
+                container.style.display = 'block';
+                player.src = this.value;
+            } else {
+                container.style.display = 'none';
+            }
+        };
+
+        // نظام التأكيد
+        document.getElementById('addBookForm').onsubmit = function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'هل أنت متأكد؟',
+                text: "سيتم رفع الصورة ونشر الكتاب في المكتبة!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#ff6b00',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'نعم، انشر الآن',
+                cancelButtonText: 'تراجع'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= book.title %> | OD Book</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .subscription-card {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #ffcc80;
+            text-align: center;
+        }
+        .btn-subscribe {
+            display: inline-block;
+            background: var(--main-orange);
+            color: #fff !important;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn-subscribe:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(255,107,0,0.3); }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">OD <span>Book</span></a>
+        <a href="/" style="text-decoration: none; color: var(--main-orange); font-weight: bold;">
+            <i class="fas fa-chevron-right"></i> العودة للرئيسية
+        </a>
+    </nav>
+
+    <div class="container" style="padding: 50px 8%; display: flex; gap: 50px; align-items: flex-start; flex-wrap: wrap;">
+        
+        <div class="book-cover" style="flex: 1; min-width: 300px;">
+            <img src="/images/<%= book.img %>" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+        </div>
+        
+        <div class="book-details-info" style="flex: 2; text-align: right; min-width: 300px;">
+            <h1 style="font-size: 3rem; margin-bottom: 10px; font-weight: 900;"><%= book.title %></h1>
+            <h3 style="color: var(--main-orange); margin-bottom: 30px; font-weight: 700;">
+                <i class="fas fa-pen-nib"></i> الكاتب/ة: <%= book.author %>
+            </h3>
+            
+            <div style="margin-bottom: 40px;">
+                <h4 style="margin-bottom: 10px; border-bottom: 2px solid var(--main-orange); display: inline-block;">نبذة عن الكتاب:</h4>
+                <p style="font-size: 1.2rem; line-height: 1.8; color: #444;">
+                    <%= book.desc %>
+                </p>
+            </div>
+
+            <div class="audio-section">
+                <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+                    <div class="audio-player" style="background: #fdfdfd; padding: 25px; border-radius: 20px; border: 2px solid #eee;">
+                        <p style="margin-bottom: 15px; font-weight: bold; color: #2ecc71;">
+                            <i class="fas fa-play-circle"></i> أنت تستمع الآن بصفتك مشتركاً:
+                        </p>
+                        <audio controls style="width: 100%;">
+                            <source src="<%= book.audio %>" type="audio/mpeg">
+                            متصفحك لا يدعم مشغل الصوت.
+                        </audio>
+                    </div>
+                <% } else { %>
+                    <div class="subscription-card">
+                        <i class="fas fa-lock" style="font-size: 2rem; color: var(--main-orange); margin-bottom: 15px;"></i>
+                        <h3 style="margin-bottom: 10px;">هذا الكتاب متاح للمشتركين فقط</h3>
+                        <p style="color: #666;">استمتع بأكثر من 1500 كتاب صوتي عند اشتراكك في باقات OD Book</p>
+                        <a href="/register" class="btn-subscribe">اشترك الآن وابدأ الاستماع</a>
+                        <p style="margin-top: 15px; font-size: 0.9rem;">
+                            لديك حساب بالفعل؟ <a href="/login" style="color: var(--main-orange); font-weight: bold;">سجل دخولك</a>
+                        </p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top: 50px; text-align: center; padding: 30px; color: #888; border-top: 1px solid #eee;">
+        جميع الحقوق محفوظة لـ OD Book &copy; 2026
+    </footer>
+</body>
+</html>

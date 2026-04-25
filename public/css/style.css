@@ -1,0 +1,291 @@
+/* 1. الإعدادات الأساسية والخطوط */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
+:root {
+    --main-orange: #ff6b00;
+    --text-dark: #1a1a1a;
+    --text-gray: #666;
+    --bg-white: #ffffff;
+    --nav-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    direction: rtl;
+    background-color: var(--bg-white);
+    overflow-x: hidden;
+    color: var(--text-dark);
+}
+
+/* 2. القائمة العلوية (Navbar) */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 8%;
+    background: #fff;
+    box-shadow: var(--nav-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: 80px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text-dark);
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--main-orange);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 35px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 700;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--main-orange);
+}
+
+.nav-btns {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-login {
+    background: none;
+    border: none;
+    font-weight: 700;
+    color: #6a1b9a;
+    cursor: pointer;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.btn-orange {
+    background-color: var(--main-orange);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    border: none;
+    transition: 0.3s;
+}
+
+/* 3. قسم الـ Hero (التنسيق الجانبي) */
+.hero {
+    padding: 100px 8%;
+    background-color: #fff;
+}
+
+.hero-container {
+    display: flex; /* بيخلي النص والصورة جنب بعض */
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.hero-content {
+    flex: 1;
+    text-align: right;
+}
+
+.hero-content h4 {
+    color: var(--main-orange);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content h1 span {
+    color: var(--main-orange);
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: var(--text-gray);
+    line-height: 1.8;
+    margin-bottom: 35px;
+    max-width: 600px;
+}
+
+.btn-main-orange {
+    background-color: var(--main-orange);
+    color: white !important;
+    text-decoration: none;
+    padding: 18px 45px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 18px;
+    display: inline-block;
+    transition: 0.4s;
+    box-shadow: 0 10px 25px rgba(255, 107, 0, 0.3);
+}
+
+.btn-main-orange:hover {
+    transform: scale(1.05) translateY(-3px);
+}
+
+/* 4. تنسيق الصورة */
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    /* ميلان خفيف عشان يدي شكل 3D شيك */
+    transform: rotateY(-10deg) rotateX(5deg);
+    filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1));
+}
+
+/* 5. قسم أحدث الكتب (Grid) */
+.books-section {
+    padding: 60px 8%;
+    background-color: #fff;
+}
+
+.section-title {
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 40px;
+    text-align: right;
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 30px;
+}
+
+.book-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.book-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.book-card:hover {
+    transform: translateY(-10px);
+}
+
+.book-info {
+    padding: 15px 5px;
+}
+
+.book-info h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.book-info p {
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+/* 6. Footer */
+footer {
+    padding: 40px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    color: #888;
+}
+
+/* 7. استجابة الموبايل */
+@media (max-width: 968px) {
+    .hero-container {
+        flex-direction: column; /* يرجعوا تحت بعض في الموبايل */
+        text-align: center;
+    }
+    
+    .hero-content {
+        text-align: center;
+    }
+    
+    .hero-content p {
+        margin: 0 auto 30px auto;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+}
+/* تنسيق القائمة المنسدلة */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none; /* مخفية في البداية */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    z-index: 1000;
+    border-radius: 10px;
+    padding: 10px 0;
+    list-style: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block; /* تظهر عند الوقوف بالماوس */
+}
+
+.dropdown-menu li a {
+    color: #333 !important;
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f8f9fa;
+    color: var(--main-orange) !important;
+}
